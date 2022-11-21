@@ -10,9 +10,9 @@ import {
 } from '../../../../generated/LiquidationEngine/LiquidationEngine'
 
 import {
-  FixedDiscountCollateralAuctionHouse,
+  IncreasingDiscountCollateralAuctionHouse,
 } from '../../../../generated/templates'
-import { FixedDiscountCollateralAuctionHouse as FixedDiscountCollateralAuctionHouseBind } from '../../../../generated/templates/FixedDiscountCollateralAuctionHouse/FixedDiscountCollateralAuctionHouse'
+import { IncreasingDiscountCollateralAuctionHouse as IncreasingDiscountCollateralAuctionHouseBind } from '../../../../generated/templates/IncreasingDiscountCollateralAuctionHouse/IncreasingDiscountCollateralAuctionHouse'
 import {
   getOrCreateCollateral,
   Safe,
@@ -57,37 +57,15 @@ export function handleModifyParametersCollateralTypeAddress(
     collateral.collateralAuctionHouseAddress = address
 
     // Detect the type of auction
-    let auctionHouse = FixedDiscountCollateralAuctionHouseBind.bind(address)
+    let auctionHouse = IncreasingDiscountCollateralAuctionHouseBind.bind(address)
     let auctionType = auctionHouse.AUCTION_TYPE().toString()
 
-    if (auctionType == enums.AuctionType_ENGLISH) {
-      log.info('English auction set for collateral {}', [collateral.id])
+    collateral.auctionType = enums.AuctionType_INCREASING_DISCOUNT
 
-      // Default auction config
-      let auctionConfiguration = getOrCreateEnglishAuctionConfiguration(address, collateral.id)
+    // Start indexing an instance of fixed discount auction contract
+    IncreasingDiscountCollateralAuctionHouse.create(address)
 
-      collateral.auctionType = enums.AuctionType_ENGLISH
-      collateral.englishAuctionConfiguration = auctionConfiguration.id
-
-      // Start indexing an instance of english auction contract
-      FixedDiscountCollateralAuctionHouse.create(address)
-      log.info('Start indexing english auction house: {}', [address.toHexString()])
-    } else if (auctionType == enums.AuctionType_FIXED_DISCOUNT) {
-      collateral.auctionType = enums.AuctionType_FIXED_DISCOUNT
-
-      // Start indexing an instance of fixed discount auction contract
-      FixedDiscountCollateralAuctionHouse.create(address)
-      log.info('Start indexing fixed discount auction house: {}', [address.toHexString()])
-    } else if (auctionType == enums.AuctionType_INCREASING_DISCOUNT) {
-      collateral.auctionType = enums.AuctionType_INCREASING_DISCOUNT
-
-      // Start indexing an instance of fixed discount auction contract
-      FixedDiscountCollateralAuctionHouse.create(address)
-
-      log.info('Start indexing increasing discount auction house: {}', [address.toHexString()])
-    } else {
-      log.error('Unknown auction type: {} ', [auctionType as string])
-    }
+    log.info('Start indexing increasing discount auction house: {}', [address.toHexString()])
   }
 
   collateral.save()

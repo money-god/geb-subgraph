@@ -5,6 +5,8 @@ services:
     ports:
       - '80:8000'
       - '8030:8030'
+      - '8020:8020'
+      - '8040:8040'
     depends_on:
       - ipfs
       - postgres
@@ -18,7 +20,7 @@ services:
       RUST_LOG: error
       GRAPH_LOG: info
       GRAPH_ETH_CALL_BY_NUMBER: 'true'
-      ETHEREUM_POLLING_INTERVAL: 500
+      ETHEREUM_POLLING_INTERVAL: 5000
       ETHEREUM_ANCESTOR_COUNT: 15
       ETHEREUM_REORG_THRESHOLD: 15
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
@@ -62,9 +64,10 @@ services:
     environment:
       - GRAPH_ADMIN_RPC_URL=http://graph-node:8020/
       - IPFS_URL=http://ipfs:5001
-      - SUBGRAPH_NAME=reflexer-labs/rai
+      - SUBGRAPH_NAME=tai
       - NETWORK
-    command: './docker/wait-for-it.sh\ graph-node:8000\ --timeout=40\ &&\ npm\ run\ deploy-local'
+    command: 'npm\ --verbose\ run\ deploy-local'
+    #command: './docker/wait-for-it.sh\ graph-node:8000\ --timeout=60\ &&\ npm\ --verbose\ run\ deploy-local'
     logging:
       options:
         max-size: 100m

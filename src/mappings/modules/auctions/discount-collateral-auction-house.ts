@@ -3,19 +3,19 @@ import * as integer from '../../../utils/integer'
 import {
   ModifyParameters as ModifyParametersUint,
   ModifyParameters1 as ModifyParametersAddress,
-  FixedDiscountCollateralAuctionHouse,
+  IncreasingDiscountCollateralAuctionHouse,
   BuyCollateral,
   SettleAuction,
   AddAuthorization,
   RemoveAuthorization,
-} from '../../../../generated/templates/FixedDiscountCollateralAuctionHouse/FixedDiscountCollateralAuctionHouse'
+} from '../../../../generated/templates/IncreasingDiscountCollateralAuctionHouse/IncreasingDiscountCollateralAuctionHouse'
 import { dataSource, log } from '@graphprotocol/graph-ts'
 import { getOrCreateCollateral, DiscountAuction, DiscountAuctionBatch } from '../../../entities'
 import { addAuthorization, removeAuthorization } from '../governance/authorizations'
 
 export function handleBuyCollateral(event: BuyCollateral): void {
   let id = event.params.id
-  let collateral = FixedDiscountCollateralAuctionHouse.bind(dataSource.address()).collateralType()
+  let collateral = IncreasingDiscountCollateralAuctionHouse.bind(dataSource.address()).collateralType()
 
   let auctionId = event.address.toHexString() + '-' + id.toString()
   let auction = DiscountAuction.load(auctionId)
@@ -50,7 +50,7 @@ export function handleBuyCollateral(event: BuyCollateral): void {
 
 export function handleSettleAuction(event: SettleAuction): void {
   let id = event.params.id
-  let collateralContract = FixedDiscountCollateralAuctionHouse.bind(dataSource.address())
+  let collateralContract = IncreasingDiscountCollateralAuctionHouse.bind(dataSource.address())
   let collateralName = collateralContract.collateralType()
 
   let collateral = getOrCreateCollateral(collateralName, event)

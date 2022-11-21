@@ -3,7 +3,7 @@
 A Graph protocol subgraph for GEB
 
 ```
-git clone https://github.com/reflexer-labs/geb-subgraph
+git clone https://github.com/money-god/geb-subgraph
 cd geb-subgraph
 git submodule update --init --recursive
 ```
@@ -53,7 +53,7 @@ docker-compose up -d
 
 Then access the GraphQL endpoints using:
 
-http://localhost/subgraphs/name/reflexer-labs/rai (HTTP queries)
+http://localhost/subgraphs/name/tai (HTTP queries)
 
 ## Production Graph node deployment
 
@@ -73,7 +73,7 @@ ETHEREUM_RPC=https://kovan.infura.io/v3/<API_KEY>/
 NETWORK=kovan
 
 # Name of the subgraph on the graph node.
-SUBGAPH_NAME=reflexer-labs/rai
+SUBGRAPH_NAME=tai
 
 ```
 
