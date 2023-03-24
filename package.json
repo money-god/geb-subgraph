@@ -40,7 +40,7 @@
     "@types/mocha": "^8.0.3",
     "axios": "^0.20.0",
     "ethers": "^5.0.17",
-    "mcgeb.js": "1.0.17",
+    "mcgeb.js": "1.0.25",
     "mocha": "^8.1.3",
     "mustache": "^4.2.0",
     "ts-node": "^9.0.0",
